@@ -13,7 +13,7 @@ Three definitions I've found:
 
 * “[The automation of] activities that we
   associate with human thinking, activities
-  such as decision-making, problem solving, learning ...”
+  such as decision-making, problem-solving, learning ...”
 
 #### 2. What is the Turing test, and how [is it] conducted?
 
@@ -41,3 +41,13 @@ Thus, a valid definition of rationality is: "The quality or state of having reas
 
 #### 5. What is Aristotle’s argument about the connection between knowledge and action? Does he make any further suggestion that could be used to implement his idea in AI? Who was/were the first AI researcher(s) to implement these ideas? What is the name of the program/system they developed? Google about this system and write a short description about it.
 
+#### 6. Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, lookforward, look-left-look-right, go-forward, go-back, go-left and go-right.
+
+##### (a) While crossing the road, a helicopter falls down on the robot and smashes it. Is the robot rational?
+In this instance, the agent is rational. Nothing in its action portfolio would allow it to detect the helicopter (unless it throws a cartoon shadow on the ground) and prevent the helicopter from hitting itself. The agent cannot look up.
+The agent can only act to achieve its goal based upon the information it can perceive. It cannot perceive the helicopter.
+
+
+##### (b) While crossing the road on a green light, a passing car crashes into the robot, preventing it from crossing. Is the robot rational?
+In this instance, the agent is not rational. The agent's goal is to reach the other side of the road, and it's action portfolio gives it the tools needed to detect and avoid the incoming car. Thus, the agent is behaving irrationally.
+This assumes that the agent is nimble enough to get out of the way of the car.
