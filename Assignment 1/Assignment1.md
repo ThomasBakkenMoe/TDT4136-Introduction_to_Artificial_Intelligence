@@ -51,3 +51,9 @@ The agent can only act to achieve its goal based upon the information it can per
 ##### (b) While crossing the road on a green light, a passing car crashes into the robot, preventing it from crossing. Is the robot rational?
 In this instance, the agent is not rational. The agent's goal is to reach the other side of the road, and it's action portfolio gives it the tools needed to detect and avoid the incoming car. Thus, the agent is behaving irrationally.
 This assumes that the agent is nimble enough to get out of the way of the car.
+
+#### 7. Consider the vacuum cleaner world described in Chapter 2.1 of the textbook. Let us modify this vacuum environment so that the agent is penalized 1 point for each movement.
+NOTE: I'm assuming here that the agent does not want to lose points and that it gains points when it sucks dust. It's main goal remains: to clean the entire world.
+
+##### (a) Can a simple reflex agent be rational for this environment? Explain your answer
+
