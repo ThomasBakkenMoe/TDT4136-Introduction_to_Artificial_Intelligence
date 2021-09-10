@@ -41,6 +41,7 @@ Thus, a valid definition of rationality is: "The quality or state of having reas
 
 #### 5. What is Aristotle’s argument about the connection between knowledge and action? Does he make any further suggestion that could be used to implement his idea in AI? Who was/were the first AI researcher(s) to implement these ideas? What is the name of the program/system they developed? Google about this system and write a short description about it.
 
+
 #### 6. Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, lookforward, look-left-look-right, go-forward, go-back, go-left and go-right.
 
 ##### (a) While crossing the road, a helicopter falls down on the robot and smashes it. Is the robot rational?
@@ -56,4 +57,42 @@ This assumes that the agent is nimble enough to get out of the way of the car.
 NOTE: I'm assuming here that the agent does not want to lose points and that it gains points when it sucks dust. It's main goal remains: to clean the entire world.
 
 ##### (a) Can a simple reflex agent be rational for this environment? Explain your answer
+A simple reflex agent cannot be rational for this environment. If the agent is on tile A, and tile B is dusty: the agent needs to clean tile B to accomplish its goal.
+But all the agent knows is that it will get penalized for moving, and thus it cannot risk moving on the chance that B is dusty.
 
+##### (b) Can a reflex agent with state be rational in this environment? Explain your answer.
+This agent is not rational. The fact that the agent has a memory (internal state) does not really matter in my mind. The agent will still get stuck, unable to complete its goal.
+If the agent is on tile A, and tile B is dusty: the agent needs to clean tile B to accomplish its goal. But all the agent knows is that it will get penalized for moving, and thus it cannot risk moving on the chance that B is dusty.
+
+##### (c) Assume now that the simple reflex agent (i.e., no internal state) can perceive the clean/dirty status of both locations at the same time. Can this agent be rational? Explain your answer. In case it can be rational, design the agent function.
+In this case, the agent will have a perfect observation of the state of the environment (both square A and B). This gives the agent the ability to decide if moving left or right will help it achieve its goal.
+Now: if the agent is on square A, and tile B is dusty: the agent will observe that square B is dirty and it knows that cleaning the square will negate the penalty it takes from moving.
+
+**Agent function:**
+
+*Observe environment -> if current square is dirty: clean current tile. Else if other square is dirty: move to other square. Else (both squares are clean) do nothing. -> repeat*
+
+#### 8. Consider the vacuum cleaner environment shown in Figure 2.2 in the textbook. Describe the environment using properties from Chapter 2.3.2, e.g. episodic/sequential, deterministic/stochastic etc. Explain selected values for properties in regards to the vacuum cleaner environment.
+
+These are the descriptors I would use for this environment:
+* Partially observable
+* Single agent
+* Deterministic
+* Sequential
+* Static
+* Discrete
+* Known
+
+#### 9. Discuss the advantages and limitations of these four basic kinds of agents:
+
+##### (a) Simple reflex agents
+Simple reflex agents are simple to implement and require few resources. They are however of limited maximal intelligence. Their intelligence might be perfectly adequate for relatively simple problems. For more complex problems however: they might be found lacking.
+##### (b) Model-based reflex agents
+Model-based reflex agents differ from simple reflex agents by having an "internal state" (e.g. a memory). This allows these agents to get a better understanding of the environment. They can for example interpret a car's speed by comparing its position "now" and it's position from the last time-step.
+The types of problems this kind of agent can solve are a lot more than what simple reflex agents can solve. They do however require slightly more resources than their simpler counterpart.
+##### (c) Goal-based agents
+Reflex agents react directly to input from the environment and respond with a "pre-planned" response. Goal-based will reason how their actions will result in them getting closer to their goal.
+Goal-based agents are capable of handling much more complex environments than simple reflex agents. They are however less efficient than what a reflex agent would be. They also have no way of determining the best way of reaching their goal. All the agent cares about is reaching the goal, no matter how inefficient.
+##### (d) Utility-based agents
+Utility-based agents does not work to strictly reach their goal. They work to maximize their utility. The way they "earn utility" is to achieve progress towards their goal. The better the progress, the more utility. The idea is that shorter/less costly routes to their goal gives more utility.
+These agents can achieve impressive intelligence, but they are complex to implement and can costly.
