@@ -40,7 +40,10 @@ The Merriam-Webster dictionary defines rationality as "The quality or state of b
 Thus, a valid definition of rationality is: "The quality or state of having reason or understanding."
 
 #### 5. What is Aristotle’s argument about the connection between knowledge and action? Does he make any further suggestion that could be used to implement his idea in AI? Who was/were the first AI researcher(s) to implement these ideas? What is the name of the program/system they developed? Google about this system and write a short description about it.
-
+Aristotle argues that the connection between knowledge and action is reasoning. He argues that good humans are rational beings and will use knowledge and reasoning to perform rational actions to achieve their goals.
+Aristotle's ideas relate pretty directly to goal-based agents.
+One of the first implementations of this goal-based approach was Shakey the robot.
+Shakey the robot was designed as a general-purpose robot. An operator could type a generic command like "Push the block off the platform" and Shakey would have to decode the command and interpret how it related to it's environment. It would have to locate the platform with the block on top and figure out a way to push the block off.
 
 #### 6. Consider a robot whose task it is to cross the road. Its action portfolio looks like this: look-back, lookforward, look-left-look-right, go-forward, go-back, go-left and go-right.
 
