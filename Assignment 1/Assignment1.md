@@ -79,12 +79,19 @@ Now: if the agent is on square A, and tile B is dusty: the agent will observe th
 
 These are the descriptors I would use for this environment:
 * Partially observable
+  * The environment can be observed by the agent, but the agent cannot observe the entire state of the environment at the same time. The agent can only know what's happening at the square it is currently inhabiting.
 * Single agent
+  * There is only one agent acting on the environment.
 * Deterministic
+  * The way an action from the agent alters the environment is know and always results in the same change. If the agent sucks a dirty square, the square will always be cleaned.
 * Sequential
+  * This environment is sequential. The actions taken by the agent in the previous time-step affect the state in the current time-step. 
 * Static
+  * The agent is the only force acting upon the environment. There is no chance that a change can occur while the agent is deliberating or performing an action.
 * Discrete
+  * As presented, the actions that the agent can perform are handled in discrete steps. If the agent moves to the left, nothing else will happen before the agent has completed the movement. For the agent, it is as if there is no time in between moving left and starting the next action. 
 * Known
+  * The agent knows all its possible actions and how they affect the environment. It knows that moving to the left will always result in the agent ending up in the square to the left of it.
 
 #### 9. Discuss the advantages and limitations of these four basic kinds of agents:
 
