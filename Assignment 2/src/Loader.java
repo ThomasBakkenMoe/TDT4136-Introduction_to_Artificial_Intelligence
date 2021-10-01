@@ -21,8 +21,8 @@ public class Loader {
             currentLine = bufferedReader.readLine();
             String[] currentLineArray = currentLine.trim().split("\\s+");
             newNode = new Node(Integer.parseInt(currentLineArray[0]));
-            newNode.setLatitude(Double.parseDouble(currentLineArray[1]));
-            newNode.setLongitude(Double.parseDouble(currentLineArray[2]));
+            newNode.setRow(Double.parseDouble(currentLineArray[1]));
+            newNode.setColumn(Double.parseDouble(currentLineArray[2]));
 
             nodeArray[i] = newNode;
         }

@@ -5,9 +5,8 @@ import java.util.ArrayList;
  * The same node class is used in both Dijkstra and A*,
  * and it contains the methods to calculate the distance to other nodes.
  */
-public class Node implements Comparable{
+public class Node implements Comparable {
 
-    private static final int r = 6371; // Radius of Earth (in km)
     private int nodeNum;
     private int cost = 1000000000; // The initial value is to be considered infinite
     private int priority = 1000000000; // The initial value is to be considered infinite
@@ -16,10 +15,10 @@ public class Node implements Comparable{
     private ArrayList<Edge> outgoingEdgeList = new ArrayList<>();
     private boolean expanded = false;
     private boolean discovered = false;
-    private boolean directdistanceCalculated = false;
+    private boolean directDistanceCalculated = false;
 
-    private double latitude = 0.0;
-    private double longitude = 0.0;
+    private double row = 0.0;       // x
+    private double column = 0.0;    // y
 
     public Node(int nodeNum){
         this.nodeNum = nodeNum;
@@ -37,13 +36,9 @@ public class Node implements Comparable{
 
         // Method for calculating the distance between two points along the surface of a sphere (like the Earth)
 
-        directdistanceCalculated = true;
+        directDistanceCalculated = true;
 
-        setDirectDistance(2 * r * Math.asin(Math.sqrt(
-                Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) * Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) +
-                        Math.cos(Math.toRadians(latitude)) *
-                                Math.cos(Math.toRadians(node.getLatitude())) *
-                                Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)) * Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)))));
+        setDirectDistance(Math.sqrt((node.column - column) * (node.column - column) + (node.row - row) * (node.row - row)));
 
         return directDistance;
     }
@@ -84,28 +79,28 @@ public class Node implements Comparable{
         this.expanded = expanded;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getRow() {
+        return row;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setRow(double row) {
+        this.row = row;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getColumn() {
+        return column;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setColumn(double column) {
+        this.column = column;
     }
 
     public boolean hasDirectdistanceCalculated() {
-        return directdistanceCalculated;
+        return directDistanceCalculated;
     }
 
-    public void setDirectdistanceCalculated(boolean directdistanceCalculated){
-        this.directdistanceCalculated = directdistanceCalculated;
+    public void setDirectDistanceCalculated(boolean directDistanceCalculated){
+        this.directDistanceCalculated = directDistanceCalculated;
     }
 
     public double getDirectDistance() {
@@ -153,6 +148,6 @@ public class Node implements Comparable{
 
     @Override
     public String toString() {
-        return "" + nodeNum + " lat: " + latitude + " long: " + longitude + " Prev. node: " + previousNode;
+        return "" + nodeNum + " lat: " + row + " long: " + column + " Prev. node: " + previousNode;
     }
 }

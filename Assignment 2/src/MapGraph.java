@@ -19,7 +19,7 @@ public class MapGraph {
             node.setCost(1000000000);
             node.setDiscovered(false);
             node.setExpanded(false);
-            node.setDirectdistanceCalculated(false);
+            node.setDirectDistanceCalculated(false);
             node.setDirectDistance(0.0);
             node.setPreviousNode(null);
 
@@ -173,7 +173,7 @@ public class MapGraph {
 
         for (int i = nodePathList.size() - 1; i >= 0; i--) {
 
-            bufferedWriter.write(nodePathList.get(i).getLatitude() + "," + nodePathList.get(i).getLongitude());
+            bufferedWriter.write(nodePathList.get(i).getRow() + "," + nodePathList.get(i).getColumn());
             bufferedWriter.newLine();
         }
 
@@ -187,7 +187,7 @@ public class MapGraph {
 
         for (int i = nodePathList.size() - 1; i >= 0; i--) {
 
-            bufferedWriter.write(nodePathList.get(i).getLatitude() + "," + nodePathList.get(i).getLongitude());
+            bufferedWriter.write(nodePathList.get(i).getRow() + "," + nodePathList.get(i).getColumn());
             bufferedWriter.newLine();
         }
 
