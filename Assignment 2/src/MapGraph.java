@@ -75,37 +75,36 @@ public class MapGraph {
 
         node.setExpanded(true);
 
-        for (Edge edge: node.getOutgoingEdgeList()) {
+        for (Node connectingNode: node.getConnectingNodesList()) {
 
             nodesChecked++;
 
-            if (edge.getToNode().getCost() > node.getCost() + edge.getTime()){
-                edge.getToNode().setCost(node.getCost() + edge.getTime());
-                edge.getToNode().setPreviousNode(node);
+            if (connectingNode.getCost() > node.getCost()){
+                connectingNode.setCost(node.getCost());
+                connectingNode.setPreviousNode(node);
             }else{
                 continue;
             }
 
             if (dijkstra){
 
-                edge.getToNode().setPriority(edge.getToNode().getCost());
+                connectingNode.setPriority(connectingNode.getCost());
 
             }else {
 
-                if (!edge.getToNode().hasDirectdistanceCalculated()) {
-                    edge.getToNode().calculateDirectDistanceToNode(goalNode);
+                if (!connectingNode.hasDirectdistanceCalculated()) {
+                    connectingNode.calculateDirectDistanceToNode(goalNode);
                 }
-                edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 360000) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
+                connectingNode.setPriority((int) connectingNode.getDirectDistance() + connectingNode.getCost());
             }
 
-
-            if (!edge.getToNode().isExpanded()){
-                if (edge.getToNode().isDiscovered()){
-                    priorityQueue.remove(edge.getToNode());
+            if (!connectingNode.isExpanded()){
+                if (connectingNode.isDiscovered()){
+                    priorityQueue.remove(connectingNode);
                 }
 
-                edge.getToNode().setDiscovered(true);
-                priorityQueue.add(edge.getToNode());
+                connectingNode.setDiscovered(true);
+                priorityQueue.add(connectingNode);
             }
         }
     }
@@ -126,8 +125,7 @@ public class MapGraph {
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFileName + ".txt"));
 
-        int totalTime = goalNode.getCost(); // Time in seconds
-        int totalDistance = 0;
+        int totalCost = goalNode.getCost();
         int amountOfNodes = 0;
 
         ArrayList<Node> nodePathList = new ArrayList<>();
@@ -142,33 +140,18 @@ public class MapGraph {
                 System.out.println("PrevNode is null!!!");
             }
 
-            for (Edge edge: prevNode.getOutgoingEdgeList()) {
-                if (edge.getToNode() == currentNode){
-                    totalDistance += edge.getLength();
-                }
-            }
-
             amountOfNodes++;
 
             currentNode = prevNode;
         }
 
-        int hours = totalTime / 360000;
-        int minutes = (totalTime % 360000) / 6000;
-        int seconds = (totalTime % 6000) / 100;
-
-        bufferedWriter.write("Travel time");
+        bufferedWriter.write("Travel cost");
         bufferedWriter.newLine();
-        bufferedWriter.write(hours + "t " + minutes + "m " + seconds + "s");
-        bufferedWriter.newLine();
-        bufferedWriter.write("Distance");
-        bufferedWriter.newLine();
-        bufferedWriter.write(totalDistance / 1000 + "km");
+        bufferedWriter.write(totalCost);
         bufferedWriter.newLine();
         bufferedWriter.write("Nodes traversed: " + amountOfNodes);
         bufferedWriter.newLine();
-        bufferedWriter.newLine();
-        bufferedWriter.write("latitude,longitude");
+        bufferedWriter.write("row,column");
         bufferedWriter.newLine();
 
         for (int i = nodePathList.size() - 1; i >= 0; i--) {
@@ -208,10 +191,6 @@ public class MapGraph {
         System.out.println("Reading nodes...");
 
         Node[] nodeArray = loader.loadNodes(nodeFilepath);
-
-        System.out.println("Reading edges...");
-
-        loader.loadEdges(edgeFilepath, nodeArray);
 
         System.out.println("Beginning program...");
 

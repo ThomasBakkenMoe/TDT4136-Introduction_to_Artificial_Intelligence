@@ -32,30 +32,4 @@ public class Loader {
 
         return nodeArray;
     }
-
-    public Edge[] loadEdges(String filename, Node[] nodeArray) throws Exception{
-        FileReader fileReader = new FileReader(filename);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        int numberOfEdges = Integer.parseInt(bufferedReader.readLine().replaceAll("\\s", ""));
-
-        Edge[] edgeArray = new Edge[numberOfEdges];
-
-        String currentLine = "";
-        Edge newEdge;
-
-        for (int i = 0; i < numberOfEdges; i++) {
-            currentLine = bufferedReader.readLine();
-            String[] currentLineArray = currentLine.trim().split("\\s+");
-            newEdge = new Edge(nodeArray[Integer.parseInt(currentLineArray[0])], nodeArray[Integer.parseInt(currentLineArray[1])], Integer.parseInt(currentLineArray[2]), Integer.parseInt(currentLineArray[3]), Integer.parseInt(currentLineArray[4]));
-
-            newEdge.getFromNode().getOutgoingEdgeList().add(newEdge);
-            edgeArray[i] = newEdge;
-        }
-
-        bufferedReader.close();
-        fileReader.close();
-
-        return edgeArray;
-    }
 }

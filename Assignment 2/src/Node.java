@@ -12,7 +12,7 @@ public class Node implements Comparable {
     private int priority = 1000000000; // The initial value is to be considered infinite
     private double directDistance = 0.0;
     private Node previousNode;
-    private ArrayList<Edge> outgoingEdgeList = new ArrayList<>();
+    private ArrayList<Node> connectingNodesList = new ArrayList<>();
     private boolean expanded = false;
     private boolean discovered = false;
     private boolean directDistanceCalculated = false;
@@ -67,8 +67,8 @@ public class Node implements Comparable {
         this.nodeNum = nodeNum;
     }
 
-    public ArrayList<Edge> getOutgoingEdgeList() {
-        return outgoingEdgeList;
+    public ArrayList<Node> getConnectingNodesList() {
+        return connectingNodesList;
     }
 
     public boolean isExpanded() {
