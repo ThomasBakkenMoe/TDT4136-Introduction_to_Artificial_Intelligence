@@ -9,25 +9,6 @@ public class MapGraph {
     int nodesChecked = 0;
 
     /**
-     * Method to reset all the nodes in the nodeArray. Used if we want to run both A* and Dijkstra
-     * @param nodeArray
-     */
-    public void reset(Node[] nodeArray){
-
-        for (Node node:nodeArray) {
-            node.setPriority(1000000000);
-            node.setCost(1000000000);
-            node.setDiscovered(false);
-            node.setExpanded(false);
-            node.setDirectDistanceCalculated(false);
-            node.setDirectDistance(0.0);
-            node.setPreviousNode(null);
-
-            nodesChecked = 0;
-        }
-    }
-
-    /**
      * A find the shortest path method that can use either the dijkstra of A* algorithm, based on a boolean parameter.
      * This method times the algorithm and contains the main running loop.
      * @param startingNode
@@ -36,7 +17,8 @@ public class MapGraph {
      * @param dijkstra Whether or not the dijkstra algorithm is to be used. If false: A* is used.
      * @throws Exception
      */
-    public void FindShortestPath(Node startingNode, Node goalNode, String outputFileName, boolean dijkstra) throws Exception{
+    public void FindShortestPath(Node startingNode, Node goalNode, String outputFileName, boolean dijkstra)
+            throws Exception {
 
         // Date objects used to time the algorithm
         Date start = new Date();
@@ -50,6 +32,8 @@ public class MapGraph {
         while(true){
 
             currentNode = priorityQueue.poll();
+
+            //System.out.println(currentNode);
 
             if (currentNode == null){
                 System.out.println("Current node is null! Iteration: " + iteration);
@@ -145,6 +129,7 @@ public class MapGraph {
             currentNode = prevNode;
         }
 
+
         bufferedWriter.write("Travel cost");
         bufferedWriter.newLine();
         bufferedWriter.write(totalCost);
@@ -156,7 +141,7 @@ public class MapGraph {
 
         for (int i = nodePathList.size() - 1; i >= 0; i--) {
 
-            bufferedWriter.write(nodePathList.get(i).getRow() + "," + nodePathList.get(i).getColumn());
+            bufferedWriter.write((nodePathList.get(i).getRow()) + "," + (nodePathList.get(i).getColumn()));
             bufferedWriter.newLine();
         }
 
@@ -177,29 +162,40 @@ public class MapGraph {
         bufferedWriter.close();
     }
 
+    private int findNodeNumberInListFromRowCol(int row, int col, ArrayList<Node> nodeList) {
+
+        for (Node node: nodeList){
+            if (node.getRow() == row && node.getColumn() == col) {
+                return node.getNodeNum();
+            }
+        }
+        System.out.println("Found nothing :(");
+        return 0;
+    }
+
     public static void main(String[] args) throws Exception{
 
-        int fromNode = 30236; // Reykjavík, the capital of Iceland
-        int toNode = 8136; // Akureyri, a town in the north of Iceland
+        int startRow = 28;
+        int startCol = 32;
+        int goalRow = 6;
+        int goalCol = 32;
 
-        String nodeFilepath = "nodesIceland.txt";
-        String edgeFilepath = "edgesIceland.txt";
+        String nodeFilepath = "Samfundet_map_Edgar_full.csv";
 
         MapGraph mapGraph = new MapGraph();
         Loader loader = new Loader();
 
         System.out.println("Reading nodes...");
 
-        Node[] nodeArray = loader.loadNodes(nodeFilepath);
+        ArrayList<Node> nodeList = loader.loadNodes(nodeFilepath);
 
         System.out.println("Beginning program...");
 
-        System.out.println("Djikstra");
-        mapGraph.FindShortestPath(nodeArray[fromNode], nodeArray[toNode], "outputDijkstra", true);
-
-        mapGraph.reset(nodeArray);
-
         System.out.println("A*");
-        mapGraph.FindShortestPath(nodeArray[fromNode], nodeArray[toNode], "outputAStar", false);
+
+        Node startNode = nodeList.get(mapGraph.findNodeNumberInListFromRowCol(startRow, startCol, nodeList));
+        Node goalNode = nodeList.get(mapGraph.findNodeNumberInListFromRowCol(goalRow, goalCol, nodeList));
+
+        mapGraph.FindShortestPath(startNode, goalNode, "outputAStar", false);
     }
 }

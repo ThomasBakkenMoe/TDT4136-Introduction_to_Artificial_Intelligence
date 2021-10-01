@@ -17,8 +17,8 @@ public class Node implements Comparable {
     private boolean discovered = false;
     private boolean directDistanceCalculated = false;
 
-    private double row = 0.0;       // x
-    private double column = 0.0;    // y
+    private int row = 0;       // x
+    private int column = 0;    // y
 
     public Node(int nodeNum){
         this.nodeNum = nodeNum;
@@ -79,19 +79,19 @@ public class Node implements Comparable {
         this.expanded = expanded;
     }
 
-    public double getRow() {
+    public int getRow() {
         return row;
     }
 
-    public void setRow(double row) {
+    public void setRow(int row) {
         this.row = row;
     }
 
-    public double getColumn() {
+    public int getColumn() {
         return column;
     }
 
-    public void setColumn(double column) {
+    public void setColumn(int column) {
         this.column = column;
     }
 
@@ -148,6 +148,6 @@ public class Node implements Comparable {
 
     @Override
     public String toString() {
-        return "" + nodeNum + " lat: " + row + " long: " + column + " Prev. node: " + previousNode;
+        return "" + nodeNum + " row: " + row + " col: " + column + " Prev. node: " + previousNode + " Cost:" + cost;
     }
 }
