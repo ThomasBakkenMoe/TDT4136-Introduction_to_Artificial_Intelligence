@@ -135,6 +135,16 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
+
+        legalActions = gameState.getLegalActions(0)
+        # Generate one successor state for each legal action
+        successorStates = [gameState.generateSuccessor(0, action) for action in legalActions]
+
+
+
+
+
+
         util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
