@@ -138,14 +138,21 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         legalActions = gameState.getLegalActions(0)
         # Generate one successor state for each legal action
+        # These are the nodes inhabiting the 2nd layer of the
         successorStates = [gameState.generateSuccessor(0, action) for action in legalActions]
+        maxValue = -float("inf")  # MaxValue is initialized as negative infinity.
+        chosenIndex = 0
 
+        for i in range(len(successorStates)):
+            nodeScore = self.evaluateNode(successorStates[i], 1, 0)
+            if nodeScore > maxValue:
+                maxValue = nodeScore
+                chosenIndex = i  # The index of the action with the highest score
 
+        return legalActions[chosenIndex]
 
+    def evaluateNode(self, gameState, agentIndex, depth):
 
-
-
-        util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
