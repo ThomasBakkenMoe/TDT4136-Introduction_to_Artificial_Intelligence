@@ -106,6 +106,7 @@ class MultiAgentSearchAgent(Agent):
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
 
+
 class MinimaxAgent(MultiAgentSearchAgent):
     """
     Your minimax agent (question 2)
@@ -136,22 +137,51 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
 
+        # get the legal actions for agent 0 (pacman)
         legalActions = gameState.getLegalActions(0)
         # Generate one successor state for each legal action
         # These are the nodes inhabiting the 2nd layer of the
         successorStates = [gameState.generateSuccessor(0, action) for action in legalActions]
-        maxValue = -float("inf")  # MaxValue is initialized as negative infinity.
+        maxNodeScore = -float('inf')  # MaxValue is initialized as negative infinity.
         chosenIndex = 0
 
         for i in range(len(successorStates)):
             nodeScore = self.evaluateNode(successorStates[i], 1, 0)
-            if nodeScore > maxValue:
-                maxValue = nodeScore
+            if nodeScore > maxNodeScore:
+                maxNodeScore = nodeScore
                 chosenIndex = i  # The index of the action with the highest score
-
         return legalActions[chosenIndex]
 
     def evaluateNode(self, gameState, agentIndex, depth):
+
+        # If max depth is reached or the current gameState (being evaluated) is a win or a loss, return.
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        legalActions = gameState.getLegalActions(agentIndex)
+        successorStates = [gameState.generateSuccessor(agentIndex, action) for action in legalActions]
+
+
+        # MAX, only for pacman (agent 0)
+        if agentIndex == 0:
+            maxNodeScore = -float('inf')  # maxNodeScore is initialized as negative infinity.
+            for successorState in successorStates:
+                # using max() so that maxNodeScore is only updated if the return from the recursive self.evaluateNode is
+                # bigger than the current maxNodeScore
+                maxNodeScore = max(maxNodeScore, self.evaluateNode(successorState, 1, depth))
+            return maxNodeScore
+
+        # MIN, for the ghosts (agent > 0)
+        if agentIndex > 0:
+            minNodeScore = float('inf')  # minNodeScore is initialized as negative infinity.
+            for successorState in successorStates:
+                # using min() so that maxNodeScore is only updated if the return from the recursive self.evaluateNode is
+                # smaller than the current maxNodeScore
+                if agentIndex+1 == gameState.getNumAgents():
+                    maxNodeScore = min(minNodeScore, self.evaluateNode(successorState, 0, depth+1))
+                else:
+                    maxNodeScore = min(minNodeScore, self.evaluateNode(successorState, agentIndex+1, depth))
+            return maxNodeScore
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
