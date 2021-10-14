@@ -194,7 +194,67 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        alpha = -float('inf')
+        beta = float('inf')
+
+        # get the legal actions for agent 0 (pacman)
+        legalActions = gameState.getLegalActions(0)
+        # Generate one successor state for each legal action
+        # These are the nodes inhabiting the 2nd layer of the
+        successorStates = [gameState.generateSuccessor(0, action) for action in legalActions]
+        maxNodeScore = -float('inf')  # maxNodeScore is initialized as negative infinity.
+        chosenIndex = 0
+
+        for i in range(len(successorStates)):
+            nodeScore = self.evaluateNode(successorStates[i], 1, 0, alpha, beta)
+            if nodeScore > maxNodeScore:
+                maxNodeScore = nodeScore
+                chosenIndex = i  # The index of the action with the highest score
+                alpha = nodeScore
+
+        return legalActions[chosenIndex]
+
+    def evaluateNode(self, gameState, agentIndex, depth, alpha, beta):
+
+        # If max depth is reached or the current gameState (being evaluated) is a win or a loss, return.
+        if depth == self.depth or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState)
+
+        legalActions = gameState.getLegalActions(agentIndex)
+
+        # MAX, only for pacman (agent 0)
+        if agentIndex == 0:
+            maxNodeScore = -float('inf')  # maxNodeScore is initialized as negative infinity.
+            for action in legalActions:
+                successorState = gameState.generateSuccessor(agentIndex, action)
+                # using max() so that maxNodeScore is only updated if the return from the recursive self.evaluateNode is
+                # bigger than the current maxNodeScore
+                maxNodeScore = max(maxNodeScore, self.evaluateNode(successorState, 1, depth, alpha, beta))
+
+                # If the score of a node branch returns a score higher than beta: then this entire cluster of branches
+                # can be ignored, MIN will prevent these branches from being selected
+                if maxNodeScore > beta:
+                    return maxNodeScore
+                alpha = max(alpha, maxNodeScore)
+            return maxNodeScore
+
+        # MIN, for the ghosts (agent > 0)
+        if agentIndex > 0:
+            minNodeScore = float('inf')  # minNodeScore is initialized as negative infinity.
+            for action in legalActions:
+                successorState = gameState.generateSuccessor(agentIndex, action)
+                # using min() so that minNodeScore is only updated if the return from the recursive self.evaluateNode is
+                # smaller than the current minNodeScore
+                if agentIndex + 1 == gameState.getNumAgents():
+                    minNodeScore = min(minNodeScore, self.evaluateNode(successorState, 0, depth+1, alpha, beta))
+                else:
+                    minNodeScore = min(minNodeScore, self.evaluateNode(successorState, agentIndex+1, depth, alpha, beta))
+
+                if minNodeScore < alpha:
+                    return minNodeScore
+                beta = min(beta, minNodeScore)
+            return minNodeScore
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
