@@ -227,6 +227,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         if agentIndex == 0:
             maxNodeScore = -float('inf')  # maxNodeScore is initialized as negative infinity.
             for action in legalActions:
+                # only generate the successor state if it is actually needed
                 successorState = gameState.generateSuccessor(agentIndex, action)
                 # using max() so that maxNodeScore is only updated if the return from the recursive self.evaluateNode is
                 # bigger than the current maxNodeScore
@@ -243,6 +244,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         if agentIndex > 0:
             minNodeScore = float('inf')  # minNodeScore is initialized as negative infinity.
             for action in legalActions:
+                # only generate the successor state if it is actually needed
                 successorState = gameState.generateSuccessor(agentIndex, action)
                 # using min() so that minNodeScore is only updated if the return from the recursive self.evaluateNode is
                 # smaller than the current minNodeScore
