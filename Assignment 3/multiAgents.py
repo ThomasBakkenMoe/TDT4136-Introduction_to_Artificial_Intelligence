@@ -253,6 +253,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 else:
                     minNodeScore = min(minNodeScore, self.evaluateNode(successorState, agentIndex+1, depth, alpha, beta))
 
+                # If the score of a node branch returns a score lower than alpha: then this entire cluster of branches
+                # can be ignored, MAX will prevent these branches from being selected
                 if minNodeScore < alpha:
                     return minNodeScore
                 beta = min(beta, minNodeScore)
