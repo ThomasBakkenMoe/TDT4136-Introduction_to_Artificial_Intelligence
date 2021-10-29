@@ -114,7 +114,39 @@ class CSP:
         iterations of the loop.
         """
         # TODO: IMPLEMENT THIS
-        pass
+
+        # Iterate for each time this method is called
+        self.backtrack_counter += 1
+
+        # Check if the sudoku problem is solved (all keys in assignment has a value with length = 1)
+        complete = True
+        for k in assignment:
+            if len(assignment[k]) > 1:
+                complete = False
+        if complete:
+            return assignment
+
+        # Select an unassigned cell/variable/key
+        key = self.select_unassigned_variable(assignment)
+
+        for value in assignment[key]:
+            current_assignment = copy.deepcopy(assignment)  # deep copy to prevent everything going wrong
+            current_assignment[key] = value
+
+            # Run AC3 with the neighboring arcs as the queue
+            inference_success = self.inference(current_assignment, self.get_all_neighboring_arcs(key))
+
+            if inference_success:
+                finished_assignment = self.backtrack(current_assignment)
+
+                # If finished_assignment becomes filled out (not NoneType), we will return the finished assignment.
+                # The game is thus won.
+                if finished_assignment:
+                    return finished_assignment
+
+        self.failure_counter += 1
+        return False
+
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
@@ -137,7 +169,22 @@ class CSP:
         is the initial queue of arcs that should be visited.
         """
         # TODO: IMPLEMENT THIS
-        pass
+
+        while len(queue) > 0:
+            arc = queue.pop()
+
+            # attempt to remove constraint-breaching value
+            if self.revise(assignment, arc[0], arc[1]):
+
+                # if a variable has no legal values after revise(), that means that this Sudoku puzzle is not solvable
+                if len(assignment[arc[0]]) <= 0:
+                    return False
+
+                # add all neighbouring variables to the queue
+                for neighbouring_arc in self.get_all_neighboring_arcs(arc[0]):
+                    queue.append(neighbouring_arc)
+
+        return True
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -156,6 +203,7 @@ class CSP:
         # If a constraint is being broken: remove the infringing value from i
         for value_x in assignment[i]:
             if not any((value_x, value_y) in self.constraints[i][j] for value_y in assignment[j]):
+                print(assignment[i])
                 assignment[i].remove(value_x)
                 revised = True
 
@@ -228,3 +276,5 @@ def print_sudoku_solution(solution):
 if __name__ == '__main__':
     csp = create_sudoku_csp(sys.argv[1])
     print_sudoku_solution(csp.backtracking_search())
+    print("Backtrack method was called ", csp.backtrack_counter, " times.")
+    print("Backtrack method failed ", csp.failure_counter, " times")
