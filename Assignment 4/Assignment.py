@@ -113,7 +113,6 @@ class CSP:
         assignments and inferences that took place in previous
         iterations of the loop.
         """
-        # TODO: IMPLEMENT THIS
 
         # Iterate for each time this method is called
         self.backtrack_counter += 1
@@ -131,7 +130,7 @@ class CSP:
 
         for value in assignment[key]:
             current_assignment = copy.deepcopy(assignment)  # deep copy to prevent everything going wrong
-            current_assignment[key] = value
+            current_assignment[key] = [value]
 
             # Run AC3 with the neighboring arcs as the queue
             inference_success = self.inference(current_assignment, self.get_all_neighboring_arcs(key))
@@ -176,7 +175,8 @@ class CSP:
             # attempt to remove constraint-breaching value
             if self.revise(assignment, arc[0], arc[1]):
 
-                # if a variable has no legal values after revise(), that means that this Sudoku puzzle is not solvable
+                # if a variable has no legal values after revise(), that means that this current path is not going to
+                # lead to a solved puzzle
                 if len(assignment[arc[0]]) <= 0:
                     return False
 
@@ -203,7 +203,6 @@ class CSP:
         # If a constraint is being broken: remove the infringing value from i
         for value_x in assignment[i]:
             if not any((value_x, value_y) in self.constraints[i][j] for value_y in assignment[j]):
-                print(assignment[i])
                 assignment[i].remove(value_x)
                 revised = True
 
