@@ -152,11 +152,14 @@ class CSP:
 
         revised = False
 
+        # Checks for every legal value for i and j if there is a constraint that is being broken.
+        # If a constraint is being broken: remove the infringing value from i
         for value_x in assignment[i]:
             if not any((value_x, value_y) in self.constraints[i][j] for value_y in assignment[j]):
                 assignment[i].remove(value_x)
                 revised = True
 
+        # Returns True if a value has been removed
         return revised
 
 
