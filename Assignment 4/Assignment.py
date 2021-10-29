@@ -1,5 +1,6 @@
 import copy
 import itertools
+import sys
 
 
 class CSP:
@@ -13,6 +14,10 @@ class CSP:
         # self.constraints[i][j] is a list of legal value pairs for
         # the variable pair (i, j)
         self.constraints = {}
+
+        # counters
+        self.backtrack_counter = 0
+        self.failure_counter = 0
 
     def add_variable(self, name, domain):
         """Add a new variable to the CSP. 'name' is the variable name
@@ -118,7 +123,12 @@ class CSP:
         of legal values has a length greater than one.
         """
         # TODO: IMPLEMENT THIS
-        pass
+        # Returns the name of the first variable that is not yet assigned
+        # Note: this might not be the most effective way of doing this.
+        # I think returning the variable that has the fewest remaining options might be better.
+        for key in assignment:
+            if len(assignment[key]) > 1:
+                return key
 
     def inference(self, assignment, queue):
         """The function 'AC-3' from the pseudocode in the textbook.
@@ -139,7 +149,15 @@ class CSP:
         legal values in 'assignment'.
         """
         # TODO: IMPLEMENT THIS
-        pass
+
+        revised = False
+
+        for value_x in assignment[i]:
+            if not any((value_x, value_y) in self.constraints[i][j] for value_y in assignment[j]):
+                assignment[i].remove(value_x)
+                revised = True
+
+        return revised
 
 
 def create_map_coloring_csp():
@@ -186,6 +204,7 @@ def create_sudoku_csp(filename):
                     cells.append('%d-%d' % (row, col))
             csp.add_all_different_constraint(cells)
 
+
     return csp
 
 
@@ -202,3 +221,7 @@ def print_sudoku_solution(solution):
         print("")
         if row == 2 or row == 5:
             print('------+-------+------')
+
+if __name__ == '__main__':
+    csp = create_sudoku_csp(sys.argv[1])
+    print_sudoku_solution(csp.backtracking_search())
